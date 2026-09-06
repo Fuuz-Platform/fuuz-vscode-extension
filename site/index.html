@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuuz for VS Code &mdash; Fuuz Accelerator</title>
+<meta name="description" content="Fuuz for VS Code (Open Beta) — connect VS Code to Fuuz over MCP: resources, ERDs, flows, data queries, installable platform skills, and UI validation in a real browser.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://accelerators.fuuz.com/fuuz-vscode-extension/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://accelerators.fuuz.com/fuuz-vscode-extension/">
+<meta property="og:site_name" content="Fuuz Accelerators">
+<meta property="og:title" content="Fuuz for VS Code &mdash; Fuuz Accelerator">
+<meta property="og:description" content="Fuuz for VS Code (Open Beta) — connect VS Code to Fuuz over MCP: resources, ERDs, flows, data queries, installable platform skills, and UI validation in a real browser.">
+<link rel="icon" href="assets/appicon-violet.svg">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="prose.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "Fuuz for VS Code",
+  "url": "https://accelerators.fuuz.com/fuuz-vscode-extension/",
+  "description": "Fuuz for VS Code (Open Beta) \u2014 connect VS Code to Fuuz over MCP: resources, ERDs, flows, data queries, installable platform skills, and UI validation in a real browser.",
+  "codeRepository": "https://github.com/Fuuz-Platform/fuuz-vscode-extension",
+  "applicationCategory": "BusinessApplication",
+  "runtimePlatform": "Fuuz",
+  "author": {
+    "@type": "Organization",
+    "name": "Fuuz",
+    "url": "https://fuuz.com"
+  }
+}
+</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="../"><img src="assets/logo-horizontal-on-midnight.svg" alt="Fuuz"></a>
+    <span class="section">Accelerators</span>
+    <nav><a href="#requirements">Requirements</a><a href="#install-team">Install (team)</a><a href="#permissions-important">Permissions (important)</a><a href="https://github.com/Fuuz-Platform/fuuz-vscode-extension">GitHub</a></nav>
+  </div>
+</header>
+<main>
+<div class="wrap hero">
+  <p class="eyebrow">Accelerator &middot; Fuuz package</p>
+  <h1>Fuuz for VS <span class="accent">Code</span></h1>
+  <p class="lede">Fuuz for VS Code (Open Beta) — connect VS Code to Fuuz over MCP: resources, ERDs, flows, data queries, installable platform skills, and UI validation in a real browser.</p>
+  <div class="ctas">
+    <a class="cta cta-primary" href="https://github.com/Fuuz-Platform/fuuz-vscode-extension">Get the package</a>
+    <a class="cta cta-secondary" href="../">All accelerators</a>
+  </div>
+</div>
+<section>
+  <div class="wrap prose">
+<blockquote>
+<p>🧪 <strong>Open Beta</strong> — Part of the Fuuz Apps repository, which is in <strong>open beta</strong>.
+Actively developed and usable; features and APIs may change and you may hit rough edges.</p>
+</blockquote>
+<p>Connect VS Code to your Fuuz environments. Add a connection from an API key, and
+the extension registers the <strong>Fuuz MCP server</strong> so your AI coding assistant — the
+<strong>Claude VS Code extension</strong> or GitHub Copilot agent mode — can work with your app,
+pulls in what the server exposes, and gives you runtime actions (execute flows,
+send webhooks).</p>
+<blockquote>
+<p>Some features depend on your <strong>Fuuz subscription including MCP</strong> — see
+<a href="#subscription--feature-availability">Subscription &amp; feature availability</a>.</p>
+</blockquote>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li><strong>VS Code 1.101+</strong> (for the MCP server-definition API).</li>
+<li>A <strong>Fuuz API key</strong> for the tenant you want to connect (the key encodes the
+  tenant/enterprise/environment). Keys can expire or be deactivated — the
+  extension flags a rejected key and offers <strong>Replace API Key</strong>.</li>
+<li>For the AI features: an <strong>MCP-capable AI assistant</strong> — the <strong>Claude</strong> VS Code
+  extension or <strong>GitHub Copilot</strong> agent mode — and a Fuuz subscription that
+  includes <strong>MCP</strong>.</li>
+</ul>
+<h2 id="install-team">Install (team)</h2>
+<p>Share the packaged <code>.vsix</code> and install it:</p>
+<pre><code class="language-bash">code --install-extension fuuz-vscode-extension-&lt;version&gt;.vsix
+</code></pre>
+<p>(<code>.vsix</code> installs don't auto-update — re-run on new versions. See
+<a href="#publishing">Publishing</a> for the Marketplace alternative.)</p>
+<blockquote>
+<p><strong>Tip:</strong> add <code>.fuuz/</code> to your repo's <code>.gitignore</code> (the generated
+<code>AVAILABLE.md</code> is tenant-specific). <code>.vscode/mcp.json</code> is safe to commit — the
+token is referenced via a password prompt, not stored.</p>
+</blockquote>
+<h2 id="permissions-important">Permissions (important)</h2>
+<p>Connecting and <strong>listing</strong> MCP tools needs no special authorization — but
+<strong>using</strong> the tools (loading resources, querying data, running flows) requires
+the API key's <strong>API User</strong> to be authorized <strong>inside Fuuz</strong>, per tenant/app.</p>
+<p>In each Fuuz tenant/app you want to use, assign a <strong>policy or policy group</strong>
+directly to the <strong>API User record</strong> that owns the key, granting at least the
+<strong>read/query</strong> actions for the modules the extension reads:</p>
+<ul>
+<li><code>accessControl</code> — environment/current-user info</li>
+<li><code>configuration</code> — module groups, modules, screens, the model catalog</li>
+<li><code>dataModeling</code> — data models</li>
+<li><code>orchestration</code> — data flows</li>
+<li>(plus any business modules whose data you want to <strong>Query Data Model</strong>)</li>
+</ul>
+<p>To <strong>execute flows</strong>, <strong>send webhooks</strong>, or <strong>deploy</strong>, the API User also needs
+the corresponding write/execute permissions for those modules.</p>
+<blockquote>
+<p><strong>After granting policies, issue a <em>new</em> API key</strong> for that tenant and update
+the connection with <strong>Replace API Key</strong>. An existing key does <strong>not</strong> pick up
+newly-assigned policies — permissions are bound when the key is issued.</p>
+<p>If the API User isn't authorized, the MCP server still <strong>lists</strong> the tools, so
+the <strong>MCP Tools</strong> section appears — but every data call is rejected with
+<em>"not authorized to execute the query action…"</em>, leaving the <strong>Application</strong>,
+<strong>System Data Models</strong>, and <strong>Environment</strong> sections empty. The extension shows
+these denials under a <strong>"Couldn't load some resources"</strong> node and in the
+<strong>Fuuz</strong> output channel (View → Output → Fuuz). The fix is to grant the policy
+in Fuuz — it is <strong>not</strong> a VS Code/extension setting. Authorization is
+<strong>per tenant</strong>, so it must be assigned in each tenant/app separately.</p>
+</blockquote>
+<h2 id="quick-start">Quick start</h2>
+<ol>
+<li>Install the extension and open the <strong>Fuuz</strong> icon in the activity bar.</li>
+<li>Click <strong>Add Connection by API Key</strong> and paste a Fuuz API key.</li>
+<li>The extension decodes the key (tenant, enterprise and environment), validates
+   it against the MCP server, stores the token securely, sets it active, and
+   auto-loads resources into the <strong>Resources</strong> view.</li>
+</ol>
+<p>That's it — no manual host/tenant entry. You can also run <strong>Fuuz: Add Connection
+by API Key</strong> from the Command Palette.</p>
+<h2 id="how-a-connection-is-defined">How a connection is defined</h2>
+<p>Each enterprise is identified by an <strong>environment slug</strong> — the <code>{env}.{account}</code>
+segment of the host, e.g. <code>build.mfgx</code> or <code>admin</code>. Every endpoint derives from
+<code>https://api.{slug}.fuuz.app</code>:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>URL</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP server</td>
+<td><code>…/mcp</code></td>
+<td>Registered with VS Code; used to validate keys and load resources</td>
+</tr>
+<tr>
+<td>Flow execution</td>
+<td><code>…/orchestration/executeFlow</code></td>
+<td><code>Execute Flow</code> action</td>
+</tr>
+<tr>
+<td>Webhook</td>
+<td><code>…/webhook/post/{topic}</code></td>
+<td><code>Send Webhook</code> action</td>
+</tr>
+</tbody>
+</table></div>
+<p>When you onboard with an API key, the slug, tenant and enterprise are read from
+the token's claims. Any endpoint can be overridden per enterprise in the config
+panel (<strong>Edit environment &amp; endpoints</strong>). Every call authenticates with the
+tenant's Bearer token, stored in VS Code <strong>SecretStorage</strong> — never in
+<code>settings.json</code> or source control.</p>
+<blockquote>
+<p><strong>GraphQL</strong> has no runtime endpoint. Saved queries/mutations are run by building
+a <strong>data flow</strong> that references the operation and executing that flow.</p>
+</blockquote>
+<h2 id="what-you-get">What you get</h2>
+<ul>
+<li><strong>Add by API key</strong> — auto-detects tenant/enterprise/environment, validates, and
+  stores the token securely.</li>
+<li><strong>Per-endpoint health</strong> — onboarding and the per-tenant <strong>Test endpoints</strong>
+  action probe MCP, flow execution and webhook independently and show which are
+  available for your key (hover a badge for the exact URL checked).</li>
+<li><strong>Native MCP registration</strong> — each enabled tenant with a token is registered as
+  an HTTP MCP server so Copilot/agent mode can use it. <strong>Write MCP Server Config</strong>
+  also emits a portable <code>.vscode/mcp.json</code> (the token is referenced via a password
+  <code>input</code>, not written to disk).</li>
+<li><strong>Register with Claude</strong> — VS Code's MCP registration is <strong>only visible to VS
+  Code's own Copilot</strong>; Claude reads its own config. <strong>Register MCP Server with
+  Claude</strong> writes the Fuuz servers into Claude Code (<code>.mcp.json</code> and/or user
+  <code>~/.claude.json</code>) and Claude Desktop. See
+  <a href="#use-with-claude-claude-code--claude-desktop">Use with Claude</a>.</li>
+<li><strong>Auto-loaded resources</strong> — on connect, the extension opens an MCP session and
+  pulls the environment/context info and the catalog of available MCP tools into
+  the <strong>Resources</strong> view.</li>
+<li><strong>Runtime actions</strong> — <strong>Execute Flow</strong> (<code>{ flowId, payload }</code>; also inline on
+  Flow nodes) and <strong>Send Webhook</strong> (<code>{topic}</code> + JSON body). Responses open in a
+  JSON editor; the <code>Fuuz</code> output channel logs each call. Flows are grouped by
+  type (Edge / Webflow / Backend); <strong>web flows</strong> run in the Fuuz web UI, so
+  Execute is hidden for them.</li>
+<li><strong>Connection management</strong> — set active, <strong>Replace key</strong>, <strong>Disable/Enable</strong>, and
+  remove connections from the config panel.</li>
+<li><strong>Agent tool control</strong> — the config panel's <strong>Agent Tools</strong> section lists the
+  tools the MCP server exposes — <strong>System</strong> (<code>system_*</code> platform tools) and
+  <strong>Custom (Data Flows)</strong> (<code>data_flow_*</code> and any tenant flow) — and lets you mark
+  tools disabled. Disabled tools are flagged in the <strong>Resources</strong> tree and left out
+  of the generated <strong>App Context File</strong>, steering your assistant away from them.
+  (Servers register as <strong>direct streamable-HTTP</strong>; the former stdio gating proxy
+  that hard-blocked calls has been removed.) Data models lazy-load their fields
+  when expanded.</li>
+<li><strong>Fuuz skills for your assistant</strong> — <strong>Install Fuuz Skills</strong> copies the bundled
+  platform skills into <code>.claude/skills/</code>, where your AI assistant discovers them
+  by name: data models, flows and flow nodes, screens and screen elements,
+  expressions, GraphQL, integration, styling — plus <strong>UI validation</strong> (below).
+  Each of the three build areas carries a <em>field notes</em> reference of platform
+  behaviour that fails <strong>silently</strong>, so your assistant does not rediscover it at
+  your expense. See <a href="#skills">Skills</a>.</li>
+<li><strong>UI validation in a real browser</strong> — <strong>Start UI Session</strong> opens one signed-in
+  Chrome you log into <em>once</em>; <strong>Validate UI with Claude</strong> hands that same window
+  to Claude over CDP, so it can drive the app, the designers and the screen
+  runner without ever asking you to sign in again. See
+  <a href="#ui-validation-a-real-signed-in-browser">UI validation</a>.</li>
+<li><strong>App context file</strong> — <strong>Generate App Context File</strong> writes <code>.fuuz/AVAILABLE.md</code>,
+  a snapshot of the active tenant that your AI coding assistant can read.</li>
+</ul>
+<h2 id="sidebar">Sidebar</h2>
+<p>The <strong>Fuuz</strong> activity-bar container has two stacked views:</p>
+<ul>
+<li><strong>Connections</strong> — your enterprises and their tenants; click one to make it
+  active. On a fresh install it shows a welcome with setup buttons.</li>
+<li><strong>Resources</strong> — populated for the active tenant after a sync. With MCP it shows:</li>
+<li><strong>Environment</strong> — context/tenant details from the server</li>
+<li><strong>MCP Tools</strong> — the server's available tools (capabilities)</li>
+<li>the flow-configured module-group hierarchy when present:</li>
+</ul>
+<pre><code>moduleGroup
+├─ module
+│  ├─ screens
+│  ├─ flows
+│  └─ data models
+├─ documents
+├─ scripts
+└─ graphql (queries / mutations)
+</code></pre>
+<h2 id="use-with-claude-claude-code-claude-desktop">Use with Claude (Claude Code / Claude Desktop)</h2>
+<p>VS Code's MCP registration (<code>registerMcpServerDefinitionProvider</code>) is consumed
+<strong>only by VS Code's own Copilot/agent mode</strong> — Claude can't see it. Each MCP
+client reads its own config, so to make Fuuz reachable from Claude the extension
+writes the servers into Claude's config files.</p>
+<h3>Automatic (default)</h3>
+<p>With <code>fuuz.claudeAutoRegister</code> set to <code>userAndDesktop</code> (the default), the
+extension keeps Claude in sync for you: whenever you <strong>add a connection</strong>,
+<strong>replace a key</strong>, or <strong>enable/disable</strong> one, it rewrites the Claude config. So
+the whole flow is just <strong>connect an API key → restart Claude</strong>. No command, no
+env vars, no copy/paste.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Where it writes</th>
+<th>Token</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code — user</td>
+<td><code>~/.claude.json</code></td>
+<td><strong>Embedded</strong> (private home-dir config, mode 600, never committed)</td>
+</tr>
+<tr>
+<td>Claude Desktop</td>
+<td><code>claude_desktop_config.json</code></td>
+<td><strong>Embedded</strong> as a direct streamable-HTTP entry</td>
+</tr>
+</tbody>
+</table></div>
+<p>The live token is embedded into these private files exactly the way every other
+MCP server stores its auth — and it's <strong>refreshed automatically</strong> when you
+<strong>Replace API Key</strong>. Set <code>fuuz.claudeAutoRegister</code> to <code>user</code> (Claude Code only)
+or <code>off</code> (manual only) to change this. Only <code>fuuz-*</code> keys are managed; everything
+else in the files is preserved.</p>
+<blockquote>
+<p><strong>Restart Claude</strong> after a change — Claude loads MCP servers at startup, so a
+running session won't see new/updated Fuuz servers until it's restarted.</p>
+<p>Both Claude Code and Claude Desktop now receive a <strong>direct streamable-HTTP</strong>
+entry (embedded Bearer token) — no local Node proxy process is involved.</p>
+</blockquote>
+<h3>Project scope (shareable, opt-in)</h3>
+<p>Run <strong>Fuuz: Register MCP Server with Claude</strong> and also tick <strong>Claude Code — this
+project</strong> to write a <code>.mcp.json</code> at the workspace root. This file is meant to be
+<strong>committed and shared</strong>, so the token is <strong>never embedded</strong> — entries reference
+<code>Bearer ${FUUZ_TOKEN_&lt;ENTERPRISE&gt;_&lt;TENANT&gt;}</code>. The command's <strong>Copy export
+commands</strong> action copies the matching <code>export FUUZ_TOKEN_…='&lt;token&gt;'</code> lines to
+your clipboard; paste them into your shell profile (e.g. <code>~/.zshrc</code>) and restart
+Claude.</p>
+<blockquote>
+<p>A project-scope server <strong>shadows</strong> a user-scope server with the same name in
+Claude Code. If you commit a project <code>.mcp.json</code>, make sure collaborators export
+the env vars, or that entry won't connect.</p>
+</blockquote>
+<h2 id="skills">Skills</h2>
+<p><strong>Fuuz: Install Fuuz Skills</strong> copies the bundled skills to <code>.claude/skills/</code>.
+That is where Claude Code discovers project skills — the copy is also yours to
+edit and commit, so a team can extend them.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>skill</th>
+<th>covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fuuz-data-model</code></td>
+<td>model definitions, fields, relations, triggers, sequences, indices — <strong>plus <code>deploy-rules.md</code></strong></td>
+</tr>
+<tr>
+<td><code>fuuz-data-flow</code></td>
+<td>flow structure, environments, patterns — <strong>plus <code>runtime-rules.md</code></strong></td>
+</tr>
+<tr>
+<td><code>fuuz-data-flow-nodes</code></td>
+<td>every node type's exact <code>data</code> schema, by category</td>
+</tr>
+<tr>
+<td><code>fuuz-screen-design</code></td>
+<td>Craft.js node maps, transforms, queries, patterns — <strong>plus <code>silent-failures.md</code></strong></td>
+</tr>
+<tr>
+<td><code>fuuz-screen-elements</code></td>
+<td>per-element props, by category</td>
+</tr>
+<tr>
+<td><code>fuuz-screen-styling</code></td>
+<td>the design-system tokens and how styles resolve</td>
+</tr>
+<tr>
+<td><code>fuuz-expressions</code></td>
+<td>JSONata and JavaScript in the platform, and the context bound to each</td>
+</tr>
+<tr>
+<td><code>fuuz-graphql</code></td>
+<td>queries, predicates, pagination</td>
+</tr>
+<tr>
+<td><code>fuuz-integration</code></td>
+<td>connectors, REST, databases</td>
+</tr>
+<tr>
+<td><code>fuuz-ui-validation</code></td>
+<td>driving the real UI in a real browser (below)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The three <strong>field-notes</strong> files are the part that saves the most time. They
+document platform behaviour that produces <strong>no error</strong> — where a deploy reports
+success and serves an incomplete schema, a flow runs and writes nothing, or a
+screen renders blank. Each entry was found by a failure on a live tenant, so your
+assistant can recognise the symptom instead of debugging its own correct code.
+A few examples of what they will stop you losing an afternoon to:</p>
+<ul>
+<li>A data-model name may not contain digits, and may not end in <code>Node</code>, <code>Edge</code> or
+  <code>Document</code>. An <code>ID</code> field's name must end in <code>Id</code> — and the error names neither
+  the field nor which of the two identifiers to change.</li>
+<li>Deployment is asynchronous, and a reverse collection to a not-yet-deployed child
+  is dropped <strong>silently</strong>. The only proof a deploy worked is introspecting
+  <code>&lt;Name&gt;Node { fields }</code>. The most recently deployed version serves, not the
+  highest number.</li>
+<li>A flow's request payload is out of scope after the first node, so a <code>mode</code> gate
+  written after an HTTP call is always false — every run becomes a silent dry run
+  that reports success.</li>
+<li>The node type is <code>mutate</code>, not <code>mutation</code>. An invalid type deploys clean,
+  reports <code>deployed: true</code>, and then answers <code>NotFoundError</code>, which reads like a
+  propagation problem.</li>
+<li>A screen component missing <code>type: "canvas"</code> deploys <code>true</code> and renders a
+  completely <strong>empty</strong> page; an element missing <code>elementName</code> is dropped; a filter
+  form with nothing calling <code>fn.search()</code> filters nothing.</li>
+<li><code>format: "currency"</code> ignores <code>formatString</code>, and numeral's <code>%</code> multiplies by
+  100 — so a percentage stored as <code>80</code> renders as <code>8000%</code>.</li>
+</ul>
+<h2 id="ui-validation-a-real-signed-in-browser">UI validation: a real, signed-in browser</h2>
+<p>Pushing a screen over MCP proves the platform <em>accepted</em> it. It does not prove it
+renders, binds, queries or saves — and a screen can deploy clean and render blank
+with no error at all. So the extension makes "go and look" a two-command job.</p>
+<p><strong>1. Fuuz: Start UI Session (Browser)</strong> — installs the harness into <code>.fuuz/ui</code>,
+then opens a headed Chrome with its own persistent profile and the DevTools port
+open. Sign in once and <strong>leave the window open</strong>. The browser is spawned
+<em>detached</em>, so it outlives the command — a browser launched as a child process
+would die with it, and the next attach would look like a failed login.</p>
+<p><strong>2. Fuuz: Validate UI with Claude</strong> — describe what to check. The extension
+writes an MCP config that points the Playwright MCP at <em>that already-signed-in
+window</em> (<code>--cdp-endpoint</code>), adds your tenant's Fuuz MCP so the agent can verify by
+reading the record back, and launches Claude with the <code>fuuz-ui-validation</code> skill.
+Choose whether it confirms before writes or runs with full authority.</p>
+<p>Why attach instead of launching a fresh browser: a second Chrome comes up signed
+<strong>out</strong>, and an agent that meets a login page tends to report it as a broken
+screen. Attaching also means the session survives between sessions — you log in
+in the morning, not per task.</p>
+<p>The same session is drivable from the terminal, which is the right tool for a loop
+or a whole-panel read:</p>
+<pre><code class="language-bash">node .fuuz/ui/fuuz-ui.cjs status                       # alive? which tenant/role?
+node .fuuz/ui/fuuz-ui.cjs open 'screen:&lt;versionId&gt;'    # the screen-runner route
+node .fuuz/ui/fuuz-ui.cjs console 'screen:&lt;id&gt;' --for 20
+node .fuuz/ui/fuuz-ui.cjs shot 'screen:&lt;id&gt;' shots/loaded.png
+node .fuuz/ui/fuuz-ui.cjs run probes/my-probe.cjs      # your script gets the live page
+</code></pre>
+<p>Needs an installed Chrome/Chromium/Edge and the <code>playwright</code> package resolvable
+from the workspace (<code>npm i -D playwright</code>) — the session uses your <strong>system</strong>
+browser over CDP, so Playwright's downloaded browsers are not required.</p>
+<p><strong>What the skill insists on</strong>, because each cost a real session to learn: one
+profile reused in place (cloning it retires the session it copies); a login form
+is an <em>abort</em>, never a retry, because every read after one comes back empty and
+looks like a broken feature; and verification is reading the record back, never
+looking at the canvas — a designer save can complete with no error and create
+nothing.</p>
+<p><code>.fuuz/ui/profile/</code> holds a live session and is gitignored for you. Nothing is
+written to disk that a screenshot would not show, and the tenant token is passed
+on the terminal environment, referenced by name in the MCP config.</p>
+<h2 id="subscription-amp-feature-availability">Subscription &amp; feature availability</h2>
+<p>The Fuuz MCP server is gated by your subscription. <strong>If your subscription does not
+include MCP</strong>, MCP-dependent features are unavailable:</p>
+<ul>
+<li>registering the Fuuz MCP server for your AI copilot,</li>
+<li>automatic resource loading (environment + tool catalog),</li>
+<li>validating a key via the MCP handshake.</li>
+</ul>
+<p>A connection's <strong>Test endpoints</strong> badges show exactly which endpoints your key can
+reach. When MCP isn't available, you can still configure connections and use flow
+execution / webhooks (subject to your key's permissions), and the <strong>Resources</strong>
+view falls back to a manual state — you provide resource details by configuring
+flows in Fuuz. Per-endpoint results can also differ by key: a key may be valid for
+MCP but not for flow/webhook (or vice-versa), and the badges make that explicit.</p>
+<p>Separately from your subscription, what the extension can load depends on the API
+User's <strong>authorization in Fuuz</strong> — see <a href="#permissions-important">Permissions</a>. MCP
+<em>reachable</em> but resources <em>empty</em> almost always means the API User lacks the
+read/query policy in that tenant.</p>
+<h2 id="commands">Commands</h2>
+<ul>
+<li><strong>Fuuz: Add Connection by API Key</strong> — onboard a connection from a key</li>
+<li><strong>Fuuz: Configure Connections</strong> — open the connection management panel</li>
+<li><strong>Fuuz: Select Active Tenant</strong> — quick-pick the active enterprise/tenant</li>
+<li><strong>Fuuz: Sync Tenant Data</strong> — refresh the Resources view for the active tenant</li>
+<li><strong>Fuuz: Restart Fuuz MCP</strong> — drop pooled MCP sessions, re-resolve the registered servers, and re-sync — recover a stale connection without reloading the window</li>
+<li><strong>Fuuz: Show ERD</strong> / <strong>Show Module ERD</strong> / <strong>Show Application ERD</strong> — interactive entity-relationship diagrams (drag nodes, expand fields, persisted layout)</li>
+<li><strong>Fuuz: Find Data Model</strong> — quick-pick search that opens a model's ERD</li>
+<li><strong>Fuuz: Query Data Model</strong> — read-only data query (pick fields + JSON filter)</li>
+<li><strong>Fuuz: Execute Flow</strong> — run a data flow</li>
+<li><strong>Fuuz: Send Webhook</strong> — post to a webhook topic</li>
+<li><strong>Fuuz: Deploy Component Version</strong> — guarded deploy (screen / data flow / data model / saved transform); <strong>off until you enable <code>fuuz.enableDeploy</code></strong></li>
+<li><strong>Fuuz: Open in Fuuz</strong> — open the active tenant's app</li>
+<li><strong>Fuuz: Write MCP Server Config (.vscode/mcp.json)</strong> — emit/refresh workspace MCP config</li>
+<li><strong>Fuuz: Register MCP Server with Claude</strong> — write the Fuuz servers into Claude Code / Claude Desktop config</li>
+<li><strong>Fuuz: Install Fuuz Skills (for your AI assistant)</strong> — copy the bundled skills to <code>.claude/skills/</code></li>
+<li><strong>Fuuz: Start UI Session (Browser)</strong> — one signed-in Chrome for UI validation; log in once, leave it open</li>
+<li><strong>Fuuz: Validate UI with Claude</strong> — hand that window to Claude over CDP with the <code>fuuz-ui-validation</code> skill</li>
+<li><strong>Fuuz: Generate App Context File</strong> — write <code>.fuuz/AVAILABLE.md</code></li>
+<li><strong>Fuuz: Replace API Key</strong> / <strong>Open Settings</strong></li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Key reports unauthorized / "not active"</strong> — the per-endpoint badges show the
+  HTTP status and server message per endpoint. An inactive/expired key returns
+  401; request a fresh key.</li>
+<li><strong>Only "MCP Tools" show / Application &amp; data models empty</strong> — the API User
+  isn't authorized in that tenant. Open the <strong>"Couldn't load some resources"</strong>
+  node (or View → Output → <strong>Fuuz</strong>); messages like <em>"not authorized to execute
+  the query action on … in the configuration module"</em> tell you exactly which
+  modules to grant. Assign the read/query <strong>policy/policy group</strong> to the API User
+  in Fuuz for that tenant — see <a href="#permissions-important">Permissions</a> — then
+  <strong>Sync Tenant Data</strong>.</li>
+<li><strong>Resources view still empty after granting access</strong> — run <strong>Sync Tenant Data</strong>
+  (it clears caches). If MCP itself isn't available for your subscription, the
+  view falls back to a manual state; configure flows in Fuuz instead.</li>
+<li><strong>MCP server not appearing for Copilot</strong> — confirm the tenant is enabled (not
+  disabled) and has a token, then reload the window. You can also run <strong>Write MCP
+  Server Config</strong> to materialize <code>.vscode/mcp.json</code>.</li>
+</ul>
+<h2 id="development">Development</h2>
+<pre><code class="language-bash">npm install          # install dev dependencies
+npm run compile      # tsc → dist/ AND bundle the ERD webview → media/erd/
+npm run watch        # rebuild extension host on change
+npm run watch:webview # rebuild the ERD webview on change
+npm run lint         # eslint
+npx @vscode/vsce package --no-dependencies   # build a .vsix
+</code></pre>
+<p>The <strong>extension host</strong> has <strong>no runtime dependencies</strong> — it uses the VS Code API
+and the runtime's global <code>fetch</code>. The <strong>ERD webview</strong> is a separate React + React
+Flow app under <code>src/webview/erd/</code>, bundled by esbuild into <code>media/erd/</code> (a build
+asset, like an image); React etc. are devDependencies, not host runtime deps.
+Requires VS Code <strong>1.101+</strong> (for the MCP server definition API). Run <code>npm test</code>
+for the unit suite (pure parsing/derivation/ERD helpers, via <code>node:test</code>).</p>
+<h3>Publishing</h3>
+<p>Distribute the <code>.vsix</code> directly, or publish under the <code>cscott</code> publisher:</p>
+<pre><code class="language-bash">npx @vscode/vsce login cscott     # one-time, needs a Marketplace PAT
+npx @vscode/vsce publish
+</code></pre>
+<p><code>publisher</code> is intentionally personal (not the company) so it isn't tied to an
+org SLA. To re-home it, change <code>publisher</code> in <code>package.json</code>.</p>
+<h3>Architecture</h3>
+<ul>
+<li><strong>Services</strong></li>
+<li><code>tenantConfigurationManager.ts</code> — enterprises/tenants in settings; endpoint derivation</li>
+<li><code>tokenStore.ts</code> — tokens in SecretStorage</li>
+<li><code>connectionImporter.ts</code> — decode JWT, validate, upsert connection</li>
+<li><code>fuuzMcpClient.ts</code> — MCP session (initialize/tools), endpoint probing, MCP snapshot</li>
+<li><code>fuuzApiClient.ts</code> — flow execution / webhook POST client</li>
+<li><code>mcpServerProvider.ts</code> — registers Fuuz MCP servers with VS Code</li>
+<li><code>mcpJsonWriter.ts</code> — generates <code>.vscode/mcp.json</code></li>
+<li><code>claudeMcpWriter.ts</code> — registers the Fuuz servers into Claude Code / Claude Desktop config</li>
+<li><code>contextDocWriter.ts</code> — generates <code>.fuuz/AVAILABLE.md</code></li>
+<li><code>tenantDataService.ts</code> — sync + cache resources</li>
+<li><code>workspaceAssets.ts</code> — installs the bundled skills to <code>.claude/skills/</code> and the UI harness to <code>.fuuz/ui</code></li>
+<li><strong>Providers</strong>: <code>tenantSelectorProvider.ts</code> (Connections), <code>resourceTreeProvider.ts</code> (Resources)</li>
+<li><strong>UI</strong>: <code>ui/configPanel.ts</code> (webview), <code>ui/statusBar.ts</code>, <code>ui/runtimeCommands.ts</code>, <code>ui/erdPanel.ts</code> (hosts the ERD webview)</li>
+<li><strong>ERD webview</strong>: <code>src/webview/erd/</code> — React + React Flow app, bundled to <code>media/erd/</code> by esbuild; consumes the <code>ErdGraph</code> from <code>util/erdTypes.ts</code></li>
+<li><strong>QA / UI</strong>: <code>qa/driver.ts</code> (per-run headed QA browser), <code>qa/uiSession.ts</code> (the reusable signed-in session Claude attaches to over CDP)</li>
+<li><strong>Bundled assets</strong>: <code>resources/skills/</code> (installed as project skills), <code>resources/ui-harness/</code> (installed as <code>.fuuz/ui</code>)</li>
+<li><strong>Entry point</strong>: <code>extension.ts</code></li>
+</ul>
+<h2 id="license">License</h2>
+<p>See LICENSE file in the root of the repository.</p>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <p>Fuuz&reg; is an Enterprise Industrial Intelligence Platform.
+      <a href="https://accelerators.fuuz.com/">All accelerators</a> &middot;
+      <a href="https://github.com/Fuuz-Platform/fuuz-vscode-extension">Source</a> &middot;
+      <a href="https://fuuz.com">fuuz.com</a></p>
+  </div>
+</footer>
+</body>
+</html>

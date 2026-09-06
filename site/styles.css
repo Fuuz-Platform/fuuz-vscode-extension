@@ -1,0 +1,359 @@
+/* Fuuz Accelerators — shared stylesheet.
+ *
+ * Tokens are lifted verbatim from the Fuuz design system (.claude/skills/fuuz-design/styles.css),
+ * which encodes the FUUZ Brand Usage Guidelines. This is brand material — a site ABOUT Fuuz — so
+ * it uses the BRAND palette, not the platform's amber-on-light UI palette. The two are never mixed.
+ *
+ * The brand is DARK-FIRST: every application example in the guide, the website included, is built
+ * on Midnight. There is deliberately no light mode here. Light grounds are for printed
+ * read-documents, not brand moments.
+ *
+ * Copy this file verbatim into a new accelerator site; only index.html changes.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── primary: exact, non-negotiable ─────────────────────────────────────────────────────── */
+  --fuuz-electric-violet: #4E25E2;
+  --fuuz-deep-violet:     #2A0880;
+  --fuuz-midnight:        #05050D;
+  --fuuz-spring-green:    #4BF486;
+  --fuuz-white:           #FFFFFF;
+
+  /* ── secondary ──────────────────────────────────────────────────────────────────────────── */
+  --fuuz-blue-slate:      #5779D2;
+  --fuuz-amber:           #F9BF33;
+  --fuuz-coral:           #F67C83;
+
+  /* ── neutral ramp ───────────────────────────────────────────────────────────────────────── */
+  --fuuz-neutral-100: #D9D9E0;
+  --fuuz-neutral-200: #B3B2C1;
+  --fuuz-neutral-300: #8E8CA1;
+  --fuuz-neutral-400: #686582;
+
+  /* ── dark-ground steps: depth comes from surface steps and 1px borders, never shadows ───── */
+  --surface-page:         var(--fuuz-midnight);
+  --surface-raised:       #0A0818;
+  --surface-card:         #0C0A1C;
+  --surface-brand-muted:  #1B1442;
+  --border-subtle:        #221E40;
+  --border-default:       #2E2A52;
+
+  --text-primary:   var(--fuuz-white);
+  --text-secondary: var(--fuuz-neutral-200);
+  --text-muted:     var(--fuuz-neutral-300);
+  --text-brand:     var(--fuuz-electric-violet);
+  --text-action:    var(--fuuz-spring-green);
+
+  /* Electric Violet on Midnight fails contrast for TYPE. The guide's own emphasis colour is used
+     for fills and borders; for the one-word headline accent it is lifted just enough to read,
+     staying inside the violet family rather than substituting another hue. */
+  --text-brand-on-dark: #9F86FF;
+
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm:   6px;
+  --radius-md:   9px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --radius-pill: 999px;
+
+  --tracking-display: -0.025em;
+  --tracking-heading: -0.02em;
+  --tracking-eyebrow: 0.12em;
+  --tracking-cta:      0.06em;
+
+  --ease-standard: cubic-bezier(.2,.6,.2,1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+
+  --gutter-page: 40px;
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration-fast: 0ms; --duration-base: 0ms; }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; }
+
+a { color: var(--text-brand-on-dark); text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
+a:hover { color: var(--fuuz-white); }
+
+/* Green is action, and focus is the promise of action. */
+:focus-visible { outline: 1.5px solid var(--fuuz-spring-green); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 var(--gutter-page); }
+
+/* ── top bar ───────────────────────────────────────────────────────────────────────────────── */
+.topbar {
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-page);
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar .wrap { display: flex; align-items: center; gap: 28px; height: 64px; }
+/* The logo is used as supplied — never rebuilt, retyped or re-drawn. */
+.logo { display: flex; align-items: center; }
+.logo img { height: 26px; width: auto; object-fit: contain; display: block; }
+.topbar .section {
+  font-family: var(--font-display); font-weight: 500; font-size: 14px;
+  color: var(--text-muted); padding-left: 28px; border-left: 1px solid var(--border-subtle);
+}
+.topbar nav { margin-left: auto; display: flex; gap: 26px; font-size: 14px; }
+.topbar nav a { color: var(--text-secondary); }
+.topbar nav a:hover { color: var(--fuuz-white); }
+
+/* ── hero ──────────────────────────────────────────────────────────────────────────────────── */
+.hero { padding: 92px 0 56px; position: relative; }
+/* Ground texture: the supporting graphic at very low contrast. Never a gradient wash. */
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: url('assets/bg-geometric.jpg') center / cover no-repeat;
+  opacity: .05;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+          mask-image: linear-gradient(to bottom, #000 0%, transparent 92%);
+}
+
+.eyebrow {
+  display: inline-block; font-family: var(--font-display); font-weight: 700;
+  font-size: 11.5px; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase;
+  color: var(--text-secondary); margin-bottom: 26px;
+}
+
+h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(40px, 6vw, 72px); line-height: 1.05;
+  letter-spacing: var(--tracking-display); margin: 0 0 22px;
+}
+/* One closing word carries the point. One word, never a phrase, never twice. */
+h1 .accent { color: var(--text-brand-on-dark); }
+
+.lede { font-size: clamp(17px, 2vw, 20px); color: var(--text-secondary); max-width: 68ch; margin: 0 0 32px; }
+
+/* ── calls to action ───────────────────────────────────────────────────────────────────────── */
+/* Solid Spring Green with Midnight text is the primary call to action; outlined green is
+   secondary. Green appears nowhere else — never a surface, never decoration, never body text. */
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.cta {
+  display: inline-block; font-family: var(--font-display); font-weight: 700;
+  font-size: 13px; letter-spacing: var(--tracking-cta); text-transform: uppercase;
+  padding: 13px 24px; border-radius: var(--radius-sm);
+  transition: background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+}
+.cta-primary { background: var(--fuuz-spring-green); color: var(--fuuz-midnight); border: 1.5px solid var(--fuuz-spring-green); }
+.cta-primary:hover { background: #6FEF95; color: var(--fuuz-midnight); }
+.cta-secondary { border: 1.5px solid var(--fuuz-spring-green); color: var(--fuuz-spring-green); }
+.cta-secondary:hover { background: rgba(75,244,134,.08); color: var(--fuuz-spring-green); }
+
+/* ── sections ──────────────────────────────────────────────────────────────────────────────── */
+section { padding: 62px 0; border-top: 1px solid var(--border-subtle); }
+.sec-eyebrow {
+  font-family: var(--font-display); font-weight: 700; font-size: 11.5px;
+  letter-spacing: var(--tracking-eyebrow); text-transform: uppercase;
+  color: var(--text-muted); margin: 0 0 12px;
+}
+h2 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(26px, 3.2vw, 40px); line-height: 1.2;
+  letter-spacing: var(--tracking-heading); margin: 0 0 14px;
+}
+h2 .accent { color: var(--text-brand-on-dark); }
+.sec-lede { font-size: 17px; color: var(--text-secondary); max-width: 68ch; margin: 0 0 34px; }
+
+/* ── cards ─────────────────────────────────────────────────────────────────────────────────── */
+/* Flat fill one step above the page, 1px border, 12px radius, no shadow. A card never carries a
+   coloured left border — that motif is not Fuuz. */
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card {
+  background: var(--surface-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 24px;
+  transition: background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
+}
+/* Hover lightens the surface one step and lifts the border. No scale transform. */
+.card:hover { background: var(--surface-brand-muted); border-color: var(--border-default); }
+.card h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: var(--tracking-heading); margin: 0 0 10px; }
+.card h3 a { color: var(--fuuz-white); }
+.card h3 a:hover { color: var(--text-brand-on-dark); }
+.card p { margin: 0; font-size: 14.5px; color: var(--text-secondary); line-height: 1.62; }
+.card .meta { margin-top: 14px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); }
+
+.tag {
+  display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 10px;
+  letter-spacing: var(--tracking-eyebrow); text-transform: uppercase;
+  padding: 3px 9px; border-radius: var(--radius-pill); vertical-align: 2px; margin-left: 8px;
+  background: var(--surface-brand-muted); color: var(--fuuz-neutral-100); border: 1px solid var(--border-default);
+}
+.tag-live { background: rgba(78,37,226,.22); border-color: var(--fuuz-electric-violet); color: #C3B4FF; }
+
+/* ── resource strip ────────────────────────────────────────────────────────────────────────── */
+.resources { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.resource {
+  display: block; background: var(--surface-raised); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 22px 24px;
+  transition: background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
+}
+.resource:hover { background: var(--surface-brand-muted); border-color: var(--border-default); }
+.resource .name { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--fuuz-white); letter-spacing: var(--tracking-heading); }
+.resource .url  { font-family: var(--font-mono); font-size: 12px; color: var(--text-brand-on-dark); margin-top: 4px; }
+.resource .desc { font-size: 14px; color: var(--text-secondary); margin-top: 10px; line-height: 1.55; }
+
+/* ── demo players (click to play) ──────────────────────────────────────────────────────────── */
+/* A thumbnail facade rather than seventeen embedded players: the iframe is created only for the
+   one the reader chose, which is also why it may autoplay — the click is the gesture browsers
+   require. Bunny blocks blank-referrer requests, so a browser that strips the referrer gets a 403;
+   the script hides a failed image rather than leaving a broken icon, and the card still reads. */
+.demos { display: grid; gap: 26px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.demo { min-width: 0; }
+.demo .player, .demo iframe {
+  display: block; width: 100%; aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);
+  background: var(--surface-card); overflow: hidden;
+}
+.demo iframe { border: 1px solid var(--border-subtle); }
+.demo .player {
+  position: relative; padding: 0; cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-standard);
+}
+.demo .player img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Spring Green is action, and pressing play is the action on this page. */
+.demo .player .play {
+  position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px;
+  border-radius: var(--radius-pill); background: var(--fuuz-spring-green);
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+.demo .player .play::after {
+  content: ''; position: absolute; left: 21px; top: 16px;
+  border-style: solid; border-width: 12px 0 12px 19px;
+  border-color: transparent transparent transparent var(--fuuz-midnight);
+}
+.demo .player:hover { border-color: var(--fuuz-spring-green); }
+.demo .player:hover .play { transform: scale(1.06); }
+.demo h3 {
+  font-family: var(--font-display); font-weight: 700; font-size: 16.5px;
+  letter-spacing: var(--tracking-heading); color: var(--fuuz-white); margin: 15px 0 0;
+}
+.demo .demo-meta { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); margin: 5px 0 0; }
+.demo p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; margin: 9px 0 0; }
+
+/* ── video previews ────────────────────────────────────────────────────────────────────────── */
+/* Thumbnails come from YouTube. hqdefault is the only size guaranteed to exist for every video,
+   but it is 4:3 with letterbox bars on a 16:9 video — so the frame is forced to 16:9 and the
+   image cropped to fill, which removes the bars rather than displaying them. */
+.videos { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.video { display: block; color: inherit; }
+.video .thumb {
+  aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle); background: var(--surface-card);
+  transition: border-color var(--duration-base) var(--ease-standard);
+}
+.video .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video:hover .thumb { border-color: var(--border-default); }
+.video:hover .video-title { color: var(--text-brand-on-dark); }
+.video-title {
+  font-family: var(--font-display); font-weight: 500; font-size: 15px; line-height: 1.35;
+  letter-spacing: var(--tracking-heading); color: var(--fuuz-white); margin-top: 13px;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+.video-date { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted); margin-top: 6px; }
+
+/* ── tables ────────────────────────────────────────────────────────────────────────────────── */
+.tablewrap { overflow-x: auto; background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+table { border-collapse: collapse; width: 100%; min-width: 580px; font-size: 14.5px; }
+th, td { text-align: left; padding: 14px 22px; border-bottom: 1px solid var(--border-subtle); vertical-align: top; color: var(--text-secondary); }
+th {
+  font-family: var(--font-display); font-weight: 700; font-size: 11px;
+  letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--text-muted);
+}
+tr:last-child td { border-bottom: none; }
+td:first-child { color: var(--fuuz-white); font-weight: 500; white-space: nowrap; }
+td strong { color: var(--fuuz-white); font-weight: 700; }
+
+code { font-family: var(--font-mono); font-size: .9em; background: var(--surface-brand-muted); color: var(--fuuz-neutral-100); padding: 2px 6px; border-radius: var(--radius-sm); }
+
+/* ── code blocks ───────────────────────────────────────────────────────────────────────────── */
+pre {
+  background: var(--surface-raised); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 20px 22px; overflow-x: auto;
+  font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; margin: 0 0 18px;
+  color: var(--fuuz-neutral-100);
+}
+pre .c { color: var(--text-muted); }
+
+.cmd {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  background: var(--surface-raised); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 17px 20px;
+  font-family: var(--font-mono); font-size: 14px; margin-bottom: 12px; color: var(--fuuz-neutral-100);
+}
+.cmd .prompt { color: var(--text-muted); user-select: none; }
+.cmd .note { margin-left: auto; font-family: var(--font-body); font-size: 13px; color: var(--text-muted); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.chip {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary);
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-pill); padding: 5px 13px;
+}
+
+/* ── metrics ───────────────────────────────────────────────────────────────────────────────── */
+.metrics { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.metric { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; }
+.metric .n { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -.03em; line-height: 1.1; color: var(--fuuz-white); }
+.metric .n .unit { font-size: 16px; font-weight: 500; color: var(--text-muted); }
+.metric .l { font-size: 13.5px; color: var(--text-secondary); margin-top: 8px; line-height: 1.5; }
+
+/* Translucent violet wash — the brand-muted panel. Not a coloured left border. */
+.callout {
+  background: rgba(78,37,226,.10); border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg); padding: 20px 24px; font-size: 14.5px;
+  color: var(--text-secondary); margin: 24px 0 0;
+}
+.callout strong { color: var(--fuuz-white); }
+
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps > li { counter-increment: s; position: relative; padding-left: 46px; margin-bottom: 30px; }
+.steps > li::before {
+  content: counter(s); position: absolute; left: 0; top: 1px;
+  width: 29px; height: 29px; border-radius: var(--radius-pill);
+  background: var(--surface-brand-muted); border: 1px solid var(--border-default);
+  color: var(--text-brand-on-dark); font-family: var(--font-mono); font-size: 13px;
+  display: grid; place-items: center;
+}
+.steps h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: var(--tracking-heading); margin: 2px 0 10px; }
+.steps p { margin: 0 0 14px; color: var(--text-secondary); font-size: 14.5px; }
+
+.figure { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 22px; overflow-x: auto; }
+.figure img { display: block; border-radius: var(--radius-md); min-width: 620px; }
+
+/* ── footer ────────────────────────────────────────────────────────────────────────────────── */
+footer { border-top: 1px solid var(--border-subtle); padding: 44px 0 72px; color: var(--text-muted); font-size: 13.5px; }
+footer .wrap { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+footer nav { margin-left: auto; display: flex; gap: 24px; flex-wrap: wrap; }
+footer nav a { color: var(--text-secondary); }
+footer .addr { font-style: normal; }
+
+@media (max-width: 720px) {
+  :root { --gutter-page: 22px; }
+  .hero { padding: 56px 0 38px; }
+  .topbar .section { display: none; }
+  .cmd { font-size: 12.5px; }
+  .cmd .note { margin-left: 0; width: 100%; }
+  .figure img { min-width: 520px; }
+}

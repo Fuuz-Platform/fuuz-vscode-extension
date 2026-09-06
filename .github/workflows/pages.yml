@@ -1,0 +1,46 @@
+# Publishes site/ to GitHub Pages.
+#
+# TEMPLATE — copy this file verbatim into any Fuuz accelerator repo that has a site/ directory.
+# Nothing in it is specific to this accelerator. The published URL is decided by the repo name and
+# by the custom domain on Fuuz-Platform.github.io, not by anything here.
+#
+# Requires: Settings -> Pages -> Source = "GitHub Actions".
+
+name: Deploy site to Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; never cancel one in flight, or Pages can be left serving a half-published
+# build.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      # enablement: true turns Pages on if it is not already. Without it, the FIRST push to a new
+      # accelerator repo fails — the workflow runs before anyone has visited Settings -> Pages —
+      # and the failure reads as a broken workflow rather than a missing setting.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

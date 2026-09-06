@@ -1,0 +1,28 @@
+/* Supplements styles.css for README-derived pages. Uses the same tokens; adds only the
+   elements a prose document needs and the shared sheet does not style on its own. */
+.prose { max-width: 74ch; }
+.prose > * + * { margin-top: 1.1rem; }
+.prose h2 { margin-top: 3rem; }
+.prose h3 {
+  font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 500;
+  font-size: 1.15rem; letter-spacing: -0.01em; color: var(--fuuz-white);
+  margin-top: 2.2rem;
+}
+.prose h4 {
+  font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 500;
+  font-size: 1rem; color: var(--fuuz-neutral-100); margin-top: 1.8rem;
+}
+.prose ul, .prose ol { padding-left: 1.25rem; }
+.prose li { margin: 0.4rem 0; color: var(--fuuz-neutral-100); }
+.prose li::marker { color: var(--fuuz-neutral-400); }
+.prose blockquote {
+  border-left: 2px solid var(--fuuz-electric-violet);
+  background: var(--surface-raised);
+  padding: 0.9rem 1.1rem; margin-left: 0; border-radius: 0 6px 6px 0;
+  color: var(--fuuz-neutral-100);
+}
+.prose blockquote > * + * { margin-top: 0.6rem; }
+.prose hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 2.5rem 0; }
+.prose img { border: 1px solid var(--border-subtle); border-radius: 8px; }
+.prose table { margin: 1.2rem 0; }
+.prose .tablewrap { overflow-x: auto; }

@@ -1,6 +1,10 @@
 /* Supplements styles.css for README-derived pages. Uses the same tokens; adds only the
    elements a prose document needs and the shared sheet does not style on its own. */
 .prose { max-width: 74ch; }
+/* README-derived accelerator pages bind wrap and prose to the SAME element, so this
+   reading-width cap would also cap the page container. Match .wrap's own width there so
+   the body isn't narrower than the header — higher specificity wins regardless of load order. */
+.wrap.prose { max-width: 1320px; }
 .prose > * + * { margin-top: 1.1rem; }
 .prose h2 { margin-top: 3rem; }
 .prose h3 {

@@ -101,7 +101,7 @@ a:hover { color: var(--fuuz-white); }
 /* Green is action, and focus is the promise of action. */
 :focus-visible { outline: 1.5px solid var(--fuuz-spring-green); outline-offset: 2px; border-radius: var(--radius-sm); }
 
-.wrap { max-width: 1140px; margin: 0 auto; padding: 0 var(--gutter-page); }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter-page); }
 
 /* ── top bar ───────────────────────────────────────────────────────────────────────────────── */
 .topbar {

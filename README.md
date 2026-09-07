@@ -1,6 +1,6 @@
 # Fuuz for VS Code
 
-> **Beta concept — not an accelerator.** Published as a working concept to read, run
+> **Not an accelerator.** Published as a working concept to read, run
 > and take the pattern from. It is not a supported deliverable, it carries no service
 > level agreement, and it may change or be withdrawn without notice.
 

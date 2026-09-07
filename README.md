@@ -1,5 +1,9 @@
 # Fuuz for VS Code
 
+> **Beta concept — not an accelerator.** Published as a working concept to read, run
+> and take the pattern from. It is not a supported deliverable, it carries no service
+> level agreement, and it may change or be withdrawn without notice.
+
 > 🧪 **Open Beta** — Part of the Fuuz Apps repository, which is in **open beta**.
 > Actively developed and usable; features and APIs may change and you may hit rough edges.
 
@@ -428,3 +432,9 @@ org SLA. To re-home it, change `publisher` in `package.json`.
 ## License
 
 See LICENSE file in the root of the repository.
+
+## Service levels
+
+No service level agreement applies to anything published here. It becomes a supported
+deliverable only once it has been implemented by a Fuuz services professional or an
+approved Fuuz partner.

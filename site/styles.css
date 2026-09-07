@@ -357,3 +357,17 @@ footer .addr { font-style: normal; }
   .cmd .note { margin-left: 0; width: 100%; }
   .figure img { min-width: 520px; }
 }
+
+/* ── published terms ──────────────────────────────────────────────────────────────────────────
+   The no-SLA statement carries in the footer of every page on this domain. `footer .wrap` is a
+   flex row, so the line claims a full basis of its own rather than being wedged between the
+   byline and the nav. */
+.terms {
+  flex-basis: 100%; margin: 0; max-width: 96ch;
+  font-size: 12.5px; line-height: 1.65; color: var(--text-muted);
+}
+.terms strong { color: var(--text-secondary); }
+
+/* The beta-concept callout sits between the lede and the calls to action. `.callout`'s margin is
+   asymmetric by design elsewhere on the page, which leaves it flush against the buttons here. */
+.hero .callout { margin: 26px 0 30px; }
